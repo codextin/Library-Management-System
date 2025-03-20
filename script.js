@@ -134,15 +134,19 @@ function updateRow(id) {
 
     // Find index of the item to update
     const index = dataArray.findIndex(book => book.id === id);
+    console.log(index);
 
     if (index !== -1) {
         dataArray.splice(index, 1, { title, author, isbn, status, id }); // Remove 1 item at index and replace it
     } else {
         console.warn(`Book with id ${id} not found`);
     }
+    const reversed = dataArray.reverse(); // need to reverse to display the latest data
+
 
     // Store updated data in localStorage
-    storeData(dataArray);
+    storeData(reversed); // need to reversed back to make no changes on position in update
+    // storeData(dataArray);
 
     // Clear form inputs
     form.reset();
