@@ -115,7 +115,7 @@ function updateModal(id2) {
         <label for="updateBookStatus">Status</label>
         <select class="form-control" id="updateBookStatus" name="status" required>
             <option value="Available" ${status == "Available" ? "selected" : ""}>Available</option>
-            <option value="Unvailable" ${status == "Unvailable" ? "selected" : ""}>Unvailable</option>
+            <option value="Unavailable" ${status == "Unavailable" ? "selected" : ""}>Unavailable</option>
         </select>
     </div>
     <div class="modal-footer">
