@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -7,19 +6,27 @@
     <title>Library Management System</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <style>
+        *{
+            scroll-behavior: smooth;
+        }
+    </style>
 </head>
-<body>
 
-    <nav class="navbar navbar-expand-lg navbar-dark shadow-lg fixed-top mt-50" style="background: linear-gradient(to right, #87CEEB, #003366); color: white;">
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark shadow-lg fixed-top mt-50"
+        style="background: linear-gradient(to right, #87CEEB, #003366); color: white;">
         <div class="container">
             <a class="navbar-brand d-flex align-items-center" href="#" style="font-size: 1.5rem;">
-                <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 24 24" fill="none"
+                    stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M3 18h18M3 6h18M3 12h18M3 8l3-3h12l3 3v12H3V8z"></path>
                 </svg>
                 <span class="font-weight-bold ml-2">Library Management System</span>
             </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" style="font-size: 1.5rem;">
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"
+                style="font-size: 1.5rem;">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
@@ -29,9 +36,6 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#book-list" style="font-size: 1.2rem; padding: 1rem 1.5rem;">Books</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#add-book" style="font-size: 1.2rem; padding: 1rem 1.5rem;">Add Book</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#about" style="font-size: 1.2rem; padding: 1rem 1.5rem;">About</a>
@@ -69,38 +73,22 @@
                     <table class="table table-hover mb-0">
                         <thead class="bg-light">
                             <tr>
-                                <th class="px-4">#</th>
                                 <th>Title</th>
                                 <th>Author</th>
                                 <th>ISBN</th>
                                 <th>Status</th>
-                                <th class="text-center">Actions</th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
-                        <tbody id="book-table-body">
-                            <tr>
-                                <td class="px-4">1</td>
-                                <td>Title ka Book</td>
-                                <td>Jansen</td>
-                                <td>2025</td>
-                                <td><span class="badge badge-success">Available</span></td>
-                                <td class="text-center">
-                                    <button class="btn btn-outline-primary btn-sm mr-2" title="Update">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    <button class="btn btn-outline-danger btn-sm" title="Delete">
-                                        <i class="fas fa-trash-alt"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                        </tbody>
+                        <tbody id="book-table-body"></tbody>
                     </table>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="modal fade" id="addBookModal" tabindex="-1" role="dialog" aria-labelledby="addBookModalLabel" aria-hidden="true">
+    <div class="modal fade" id="addBookModal" tabindex="-1" role="dialog" aria-labelledby="addBookModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content border-0">
                 <div class="modal-header bg-primary text-white">
@@ -117,19 +105,32 @@
                             <label class="font-weight-bold">
                                 <i class="fas fa-book mr-2"></i>Book Title
                             </label>
-                            <input type="text" class="form-control" id="bookTitle" placeholder="Enter book title" required>
+                            <input type="text" class="form-control" id="bookTitle" name="title"
+                                placeholder="Enter book title" required>
                         </div>
                         <div class="form-group">
                             <label class="font-weight-bold">
                                 <i class="fas fa-user mr-2"></i>Author
                             </label>
-                            <input type="text" class="form-control" id="bookAuthor" placeholder="Enter author name" required>
+                            <input type="text" class="form-control" id="bookAuthor" name="author"
+                                placeholder="Enter author name" required>
                         </div>
                         <div class="form-group">
                             <label class="font-weight-bold">
                                 <i class="fas fa-calendar mr-2"></i>Year Created
                             </label>
-                            <input type="number" class="form-control" id="bookYear" placeholder="Enter publication year" required>
+                            <input type="number" class="form-control" id="isbn" name="isbn"
+                                placeholder="Enter publication year" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="font-weight-bold">
+                                <i class="fas fa-check-circle mr-2"></i>Availability Status
+                            </label>
+                            <select class="form-control" id="bookStatus" name="status" required>
+                                <option value="" selected disabled>Select a status</option>
+                                <option value="Available">Available</option>
+                                <option value="Unavailable">Unavailable</option>
+                            </select>
                         </div>
                         <div class="modal-footer px-0 pb-0">
                             <button type="button" class="btn btn-light" data-dismiss="modal">Cancel</button>
@@ -149,7 +150,7 @@
                 <div class="col-md-8 text-center">
                     <h2 class="font-weight-bold text-primary mb-4">About the System</h2>
                     <p class="lead text-muted mb-5">A modern library management solution designed for efficiency</p>
-                    
+
                     <div class="row">
                         <div class="col-md-4 mb-4">
                             <div class="card h-100 border-0 shadow-sm">
@@ -184,7 +185,8 @@
         </div>
     </div>
 
-    <div class="modal fade" id="updateBookModal" tabindex="-1" role="dialog" aria-labelledby="updateBookModalLabel" aria-hidden="true">
+    <div class="modal fade" id="updateBookModal" tabindex="-1" role="dialog" aria-labelledby="updateBookModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -198,15 +200,28 @@
                         <input type="hidden" id="updateRowIndex">
                         <div class="form-group">
                             <label for="updateBookTitle">Book Title</label>
-                            <input type="text" class="form-control" id="updateBookTitle" placeholder="Enter book title" required>
+                            <input type="text" class="form-control" id="updateBookTitle" placeholder="Enter book title"
+                                required>
                         </div>
                         <div class="form-group">
                             <label for="updateBookAuthor">Author</label>
-                            <input type="text" class="form-control" id="updateBookAuthor" placeholder="Enter author name" required>
+                            <input type="text" class="form-control" id="updateBookAuthor"
+                                placeholder="Enter author name" required>
                         </div>
                         <div class="form-group">
                             <label for="updateBookYear">Year Created</label>
-                            <input type="number" class="form-control" id="updateBookYear" placeholder="Enter publication year" required>
+                            <input type="number" class="form-control" id="updateBookYear"
+                                placeholder="Enter publication year" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="font-weight-bold">
+                                <i class="fas fa-check-circle mr-2"></i>Availability Status
+                            </label>
+                            <select class="form-control" id="updateBookStatus" required>
+                                <option value="" selected disabled>Select a status</option>
+                                <option value="Available">Available</option>
+                                <option value="Not Available">Not Available</option>
+                            </select>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -221,101 +236,16 @@
         <footer class="footer mt-5 py-4" style="background: linear-gradient(to right, #87CEEB, #003366); color: white;">
             <div class="container text-center">
                 <p class="mb-0">&copy; 2025 Library Management System. All Rights Reserved.</p>
-                <p class="mb-0">Jansen Justin </p>
+                <p class="mb-0">Janssen | Justin </p>
             </div>
         </footer>
     </footer>
-    
+
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-    <script>
-        // Update the form submission logic to close the modal after adding a book
-        document.getElementById("add-book-form").addEventListener("submit", function (e) {
-            e.preventDefault();
-
-            // Get input values
-            var title = document.getElementById("bookTitle").value;
-            var author = document.getElementById("bookAuthor").value;
-            var year = document.getElementById("bookYear").value;
-
-            // Create new table row
-            var newRow = document.createElement("tr");
-
-            newRow.innerHTML = `
-                <td>2</td>
-                <td>${title}</td>
-                <td>${author}</td>
-                <td>${year}</td>
-                <td>Available</td>
-                <td>
-                    <button class="btn btn-primary btn-sm mr-2">Update</button>
-                    <button class="btn btn-danger btn-sm">Delete</button>
-                </td>
-            `;
-
-            // Append the new row to the table
-            document.getElementById("book-table-body").appendChild(newRow);
-
-            // Clear form fields
-            document.getElementById("bookTitle").value = "";
-            document.getElementById("bookAuthor").value = "";
-            document.getElementById("bookYear").value = "";
-
-            // Close the modal
-            $('#addBookModal').modal('hide');
-        });
-
-        // Update button click handler
-        document.addEventListener('click', function(e) {
-            if (e.target && e.target.classList.contains('btn-primary') && e.target.textContent === 'Update') {
-                const row = e.target.closest('tr');
-                const rowIndex = Array.from(row.parentNode.children).indexOf(row);
-                const cells = row.cells;
-
-                // Populate update form with current values
-                document.getElementById('updateRowIndex').value = rowIndex;
-                document.getElementById('updateBookTitle').value = cells[1].textContent;
-                document.getElementById('updateBookAuthor').value = cells[2].textContent;
-                document.getElementById('updateBookYear').value = cells[3].textContent;
-
-                // Show update modal
-                $('#updateBookModal').modal('show');
-            }
-        });
-
-        // Update form submission handler
-        document.getElementById("update-book-form").addEventListener("submit", function (e) {
-            e.preventDefault();
-
-            // Get input values
-            const rowIndex = document.getElementById('updateRowIndex').value;
-            const title = document.getElementById('updateBookTitle').value;
-            const author = document.getElementById('updateBookAuthor').value;
-            const year = document.getElementById('updateBookYear').value;
-
-            // Get the row to update
-            const row = document.getElementById('book-table-body').children[rowIndex];
-            
-            // Update row content
-            row.cells[1].textContent = title;
-            row.cells[2].textContent = author;
-            row.cells[3].textContent = year;
-
-            // Close the modal
-            $('#updateBookModal').modal('hide');
-        });
-
-        // Delete button click handler
-        document.addEventListener('click', function(e) {
-            if (e.target && e.target.classList.contains('btn-danger') && e.target.textContent === 'Delete') {
-                if (confirm('Are you sure you want to delete this book?')) {
-                    const row = e.target.closest('tr');
-                    row.remove();
-                }
-            }
-        });
-    </script>
+    <script src="script.js"></script>
 </body>
+
 </html>
