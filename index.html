@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library Management System</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .container {
+            margin-top: 50px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">Library System</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#book-list">Books</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#add-book">Add Book</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about">About</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h2 class="text-center">Welcome to the Library Management System</h2>
+                <p class="text-center">Manage your books easily!</p>
+            </div>
+        </div>
+    </div>
+
+  
+    <div class="container" id="book-list">
+        <h3 class="my-4">Available Books</h3>
+        <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#addBookModal">
+            Add New Book
+        </button>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>ISBN</th>
+                    <th>Availability Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="book-table-body">
+                <tr>
+                    <td>1</td>
+                    <td>Title ka Book</td>
+                    <td>Jansen</td>
+                    <td>2025</td>
+                    <td>Available</td>
+                    <td>
+                        <button class="btn btn-primary btn-sm mr-2">Update</button>
+                        <button class="btn btn-danger btn-sm">Delete</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="modal fade" id="addBookModal" tabindex="-1" role="dialog" aria-labelledby="addBookModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addBookModalLabel">Add New Book</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="add-book-form">
+                        <div class="form-group">
+                            <label for="bookTitle">Book Title</label>
+                            <input type="text" class="form-control" id="bookTitle" placeholder="Enter book title" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="bookAuthor">Author</label>
+                            <input type="text" class="form-control" id="bookAuthor" placeholder="Enter author name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="bookYear">Year Created</label>
+                            <input type="number" class="form-control" id="bookYear" placeholder="Enter publication year" required>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Add Book</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container" id="about">
+        <h3 class="my-4">About the System</h3>
+        <p>This is a basic Library Management System to manage books. You can add new books, view existing books, and delete them.</p>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        // Update the form submission logic to close the modal after adding a book
+        document.getElementById("add-book-form").addEventListener("submit", function (e) {
+            e.preventDefault();
+
+            // Get input values
+            var title = document.getElementById("bookTitle").value;
+            var author = document.getElementById("bookAuthor").value;
+            var year = document.getElementById("bookYear").value;
+
+            // Create new table row
+            var newRow = document.createElement("tr");
+
+            newRow.innerHTML = `
+                <td>2</td>
+                <td>${title}</td>
+                <td>${author}</td>
+                <td>${year}</td>
+                <td>Available</td>
+                <td>
+                    <button class="btn btn-primary btn-sm mr-2">Update</button>
+                    <button class="btn btn-danger btn-sm">Delete</button>
+                </td>
+            `;
+
+            // Append the new row to the table
+            document.getElementById("book-table-body").appendChild(newRow);
+
+            // Clear form fields
+            document.getElementById("bookTitle").value = "";
+            document.getElementById("bookAuthor").value = "";
+            document.getElementById("bookYear").value = "";
+
+            // Close the modal
+            $('#addBookModal').modal('hide');
+        });
+    </script>
+</body>
+
+</html>
