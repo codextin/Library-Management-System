@@ -7,7 +7,7 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <style>
-        *{
+        * {
             scroll-behavior: smooth;
         }
     </style>
@@ -22,7 +22,7 @@
                     stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M3 18h18M3 6h18M3 12h18M3 8l3-3h12l3 3v12H3V8z"></path>
                 </svg>
-                <span class="font-weight-bold ml-2">Library Management System</span>
+                <span class="font-weight-bold p-2 font-size-5">BookTrack</span>
             </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"
@@ -64,20 +64,32 @@
         <div class="card shadow-sm">
             <div class="card-header bg-white d-flex justify-content-between align-items-center py-3">
                 <h3 class="mb-0 font-weight-bold text-primary">Book Collection</h3>
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addBookModal">
-                    <i class="fas fa-plus-circle mr-2"></i>Add New Book
-                </button>
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="d-flex align-items-center mr-2">
+                        <select class="form-control form-control-sm bg-light border pr-3" style="width: auto;" id="sortOption">
+                            <option value="" selected disabled>Sort By</option>
+                            <option value="title">Title</option>
+                            <option value="author">Author</option>
+                            <option value="isbn">ISBN</option>
+                            <option value="status">Status</option>
+                        </select>
+                    </div>
+                    <button type="button" class="btn btn-primary btn-sm shadow-sm" data-toggle="modal" data-target="#addBookModal">
+                        <i class="fas fa-plus-circle mr-1"></i>
+                        <span class="small">Add New Book</span>
+                    </button>
+                </div>
             </div>
             <div class="card-body p-0">
                 <div class="table-responsive">
                     <table class="table table-hover mb-0">
                         <thead class="bg-light">
-                            <tr>
-                                <th>Title</th>
-                                <th>Author</th>
-                                <th>ISBN</th>
-                                <th>Status</th>
-                                <th>Actions</th>
+                            <tr class="table-row">
+                                <th class="col-2" scope="col">Title</th>
+                                <th class="col-2" scope="col">Author</th>
+                                <th class="col-2" scope="col">ISBN</th>
+                                <th class="col-2" scope="col">Status</th>
+                                <th class="col-4" scope="col">Actions</th>
                             </tr>
                         </thead>
                         <tbody id="book-table-body"></tbody>
@@ -198,7 +210,7 @@
                 <div class="modal-body">
                     <form id="update-book-form">
                         <input type="hidden" id="updateRowIndex">
-                        <div class="form-group">
+                        <!-- <div class="form-group">
                             <label for="updateBookTitle">Book Title</label>
                             <input type="text" class="form-control" id="updateBookTitle" placeholder="Enter book title"
                                 required>
@@ -226,7 +238,7 @@
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                             <button type="submit" class="btn btn-primary">Update Book</button>
-                        </div>
+                        </div> -->
                     </form>
                 </div>
             </div>
@@ -240,6 +252,9 @@
             </div>
         </footer>
     </footer>
+
+    <!-- sweeralert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
