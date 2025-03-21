@@ -26,50 +26,88 @@ document.getElementById("add-book-form").addEventListener("submit", function (e)
 
     // console.log(title, author, isbn, status);
 
-    // console.log(dataArray[dataArray.length - 1])
+    // find the last id number
+    let uniqueId = dataArray.length > 0 ? Math.max(...dataArray.map(item => item.id)) + 1 : 0;
+    
     // Create a new book object
     const dataObject = {
         title,
         author,
         isbn,
         status,
-        id: dataArray.length === 0 ? dataArray.length + 1 : dataArray[dataArray.length - 1].id + 1,
+        id: uniqueId++,
     };
-    dataArray.push(dataObject);
 
-    // Store updated data in local storage
-    storeData(dataArray);
+    console.log(dataObject);
+    console.log(dataArray.length);
 
-    // Clear form inputs
-    form.reset();
 
-    // Close the add book modal after adding a book
-    $('#addBookModal').modal('hide');
+    // Check if the ISBN already exists in the data
+    const checkISBN = dataArray.findIndex(book => book.isbn === isbn);
+    if (checkISBN !== -1) {
+        Swal.fire({
+            icon: 'error',
+            title: 'ISBN already exists',
+            text: 'Please enter a unique ISBN.'
+        });
+        return;
+    } else {
 
-    // Update table with new book data
-    updateTable();
+        dataArray.push(dataObject);
+
+        // Store updated data in local storage
+        storeData(dataArray);
+
+        // Clear form inputs
+        form.reset();
+
+        // Close the add book modal after adding a book
+        $('#addBookModal').modal('hide');
+
+        // Update table with new book data
+        updateTable();
+
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 1500,
+            timerProgressBar: true
+        });
+
+        Toast.fire({
+            icon: 'success',
+            title: 'Book added successfully'
+        });
+    }
 });
 
 function updateTable() {
     const tableBody = document.getElementById('book-table-body');
     tableBody.innerHTML = '';
-    // console.log(getData());
-    const reversed = dataArray.reverse(); // need to reverse to display the latest data
-    // console.log(reversed);
+    const reversed = dataArray.reverse();
     reversed.forEach(({ title, author, isbn, status, id }, index) => {
         tableBody.innerHTML += `
         <tr>
-            <td>${title}</td>
-            <td>${author}</td>
-            <td>${isbn}</td>
-            <td><span class="badge ${status === "Available" ? "badge-success" : "badge-danger"}">${status}</span></td>
-            <td>
-                <button class="btn btn-outline-primary btn-sm mr-2" title="Update" onclick="updateModal(${id})">
-                    <i class="fas fa-edit"></i>
-                </button>
-                <button class="btn btn-outline-danger btn-sm" title="Delete" onclick="deleteRow(${id})">
-                    <i class="fas fa-trash-alt"></i>
-                </button>
+            <td class="col-4 text-break"><div class="mt-1">${title}</div></td>
+            <td class="col-2"><div class="mt-1">${author}</div></td>
+            <td class="col-2"><div class="mt-1">${isbn}</div></td>
+            <td class="col-2">
+                <div class="mt-2">
+                    <span class="badge ${status === "Available" ? "badge-success" : "badge-danger"}">${status}</span>
+                </div>
+            </td>
+            <td class="col-2">
+                <div class="d-flex">
+                    <button class="btn btn-outline-primary btn-sm mr-2 d-flex align-items-center" title="Update" onclick="updateModal(${id})">
+                        <i class="fas fa-edit"></i>
+                        <span class="d-none d-sm-block pl-1">Edit</span>
+                    </button>
+                    <button class="btn btn-outline-danger btn-sm d-flex align-items-center" title="Delete" onclick="deleteRow(${id})">
+                        <i class="fas fa-trash-alt"></i>
+                        <span class="d-none d-sm-block pl-1">Delete</span>
+                    </button>
+                </div>
             </td>
         </tr>
         `;
@@ -79,14 +117,43 @@ function updateTable() {
 updateTable(); // always call the update function
 
 function deleteRow(id) {
-    if (confirm('Are you sure you want to delete this row?')) {
-        const index = dataArray.findIndex(book => book.id === id);
-        if (index > -1) {
-            dataArray.splice(index, 1);
-            storeData(dataArray);
-            updateTable();
+    Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            const index = dataArray.findIndex(book => book.id === id);
+            if (index > -1) {
+                dataArray.splice(index, 1);
+                storeData(dataArray);
+                updateTable();
+            }
+            // Swal.fire({
+            //     title: "Deleted!",
+            //     text: "Your file has been deleted.",
+            //     icon: "success"
+            // });
+
+            const Toast = Swal.mixin({
+                toast: true,
+                top: 10,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 1500,
+                timerProgressBar: true
+            });
+
+            Toast.fire({
+                icon: 'success',
+                title: 'Book deleted successfully'
+            });
         }
-    }
+    });
 }
 
 function updateModal(id2) {
@@ -99,8 +166,7 @@ function updateModal(id2) {
     form.innerHTML = `
     <div class="form-group">
         <label for="updateBookTitle">Book Title</label>
-        <input type="text" class="form-control" id="updateBookTitle" name="title" placeholder="Enter book title" value="${title}"
-            required>
+        <input type="text" class="form-control" id="updateBookTitle" name="title" placeholder="Enter book title" value="${title}" required>
     </div>
     <div class="form-group">
         <label for="updateBookAuthor">Author</label>
@@ -120,40 +186,70 @@ function updateModal(id2) {
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="submit" class="btn btn-primary" onclick="updateRow(${id})">Update Book</button>
+        <button type="button" class="btn btn-primary" onclick="updateRow(${id})">Update Book</button>
     </div>
     `;
 }
 
 function updateRow(id) {
-    const form = document.getElementById('update-book-form');
-    const formData = new FormData(form);
+    Swal.fire({
+        title: "Do you want to save the changes?",
+        showDenyButton: true,
+        showCancelButton: true,
+        confirmButtonText: "Save",
+        denyButtonText: `Don't save`
+    }).then((result) => {
+        /* Read more about isConfirmed, isDenied below */
+        if (result.isConfirmed) {
+            const form = document.getElementById('update-book-form');
+            const formData = new FormData(form);
 
-    // Convert FormData to an object and destructure values
-    const { title, author, isbn, status } = Object.fromEntries(formData);
+            // Convert FormData to an object and destructure values
+            const { title, author, isbn, status } = Object.fromEntries(formData);
 
-    // Find index of the item to update
-    const index = dataArray.findIndex(book => book.id === id);
-    console.log(index);
+            // Find index of the item to update
+            const index = dataArray.findIndex(book => book.id === id);
+            console.log(index);
 
-    if (index !== -1) {
-        dataArray.splice(index, 1, { title, author, isbn, status, id }); // Remove 1 item at index and replace it
-    } else {
-        console.warn(`Book with id ${id} not found`);
-    }
-    const reversed = dataArray.reverse(); // need to reverse to display the latest data
+            if (index !== -1) {
+                dataArray.splice(index, 1, { title, author, isbn, status, id }); // Remove 1 item at index and replace it
+            } else {
+                console.warn(`Book with id ${id} not found`);
+            }
+            const reversed = dataArray.reverse(); // need to reverse to display the latest data
 
+            // Store updated data in localStorage
+            storeData(reversed); // need to reversed back to make no changes on position in update
+            // storeData(dataArray);
 
-    // Store updated data in localStorage
-    storeData(reversed); // need to reversed back to make no changes on position in update
-    // storeData(dataArray);
+            // Clear form inputs
+            form.reset();
 
-    // Clear form inputs
-    form.reset();
+            // Close the update book modal
+            $('#updateBookModal').modal('hide');
 
-    // Close the update book modal
-    $('#addBookModal').modal('hide');
+            // Update table with new data
+            updateTable();
+            Swal.fire("Saved!", "", "success");
+        } else if (result.isDenied) {
+            Swal.fire("Changes are not saved", "", "info");
 
-    // Update table with new data
-    updateTable();
+            // Close the update book modal
+            $('#updateBookModal').modal('hide');
+        }
+    });
 }
+
+document.getElementById("sortOption").addEventListener("change", function () {
+    const sortOption = this.value;
+    if (sortOption === "title") {
+        dataArray.sort((a, b) => b.title.localeCompare(a.title));
+    } else if (sortOption === "author") {
+        dataArray.sort((a, b) => b.author.localeCompare(a.author));
+    } else if (sortOption === "isbn") {
+        dataArray.sort((a, b) => b.isbn - a.isbn);
+    } else if (sortOption === "status") {
+        dataArray.sort((a, b) => b.status.localeCompare(a.status));
+    }
+    updateTable();
+})
