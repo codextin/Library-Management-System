@@ -103,7 +103,7 @@ function updateTable() {
                         <i class="fas fa-edit"></i>
                         <span class="d-none d-sm-block pl-1">Edit</span>
                     </button>
-                    <button class="btn btn-outline-danger btn-sm d-flex align-items-center" title="Delete" onclick="deleteRow(${id})">
+                    <button class="btn btn-outline-danger btn-sm d-flex align-items-center" title="Delete" onclick="deleteRow(${id}, '${title}')">
                         <i class="fas fa-trash-alt"></i>
                         <span class="d-none d-sm-block pl-1">Delete</span>
                     </button>
@@ -116,7 +116,7 @@ function updateTable() {
 
 updateTable(); // always call the update function
 
-function deleteRow(id) {
+function deleteRow(id, title) {
     Swal.fire({
         title: "Are you sure?",
         text: "You won't be able to revert this!",
@@ -150,7 +150,7 @@ function deleteRow(id) {
 
             Toast.fire({
                 icon: 'success',
-                title: 'Book deleted successfully'
+                title: `The book ( ${title} ) deleted successfully`
             });
         }
     });
