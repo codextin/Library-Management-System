@@ -150,7 +150,7 @@ function deleteRow(id, title) {
 
             Toast.fire({
                 icon: 'success',
-                title: `The book ( ${title} ) deleted successfully`
+                title: `The book: ${title} deleted successfully`
             });
         }
     });
